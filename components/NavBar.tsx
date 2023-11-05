@@ -4,7 +4,7 @@ import Currency from '../public/assets/icons/icons8-currency-96.png'
 
 
 const navigation = [
-    { name: 'Produtos Pendentes', path: '#/produtospendentes' },
+  { name: 'Produtos Pendentes', path: '#/produtospendentes' },
 ]
   
   
@@ -21,13 +21,13 @@ const NavBar = () => {
           </p>
         </Link>
 
-        <div className='flex items-center gap-5'>
+        {/* <div className='flex items-center gap-5'>
           {navigation.map((nav) => (
            <Link href="/">
                 {nav.name}
            </Link>
           ))}
-        </div>
+        </div> */}
       </nav>
     </header>
   )
