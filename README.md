@@ -1,4 +1,4 @@
-# A simple Currency Quote
+# A simple Currency Quote (Exchange Tracker)
 
 ## Demo: https://currency-quote.vercel.app
 
