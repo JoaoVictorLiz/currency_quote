@@ -1,4 +1,4 @@
-# A simple Currency Quote using the power of Next js 13.4
+# A simple Currency Quote
 
 ## Demo: https://currency-quote.vercel.app
 
