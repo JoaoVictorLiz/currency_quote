@@ -124,7 +124,7 @@ const GraficoHome = () => {
     const [query, setQuery] = useState('')
     const [data2, setData2] = useState<moeda[]>([])
     const [DaysLast, setDaysLast] = useState<string[]>([])
-    const [DaysApi, setDaysApi] = useState<number>(15)
+    const [DaysApi, setDaysApi] = useState<number>(7)
     const [activeButton, setActiveButton] = useState<string | null>('7Days');
 
     
