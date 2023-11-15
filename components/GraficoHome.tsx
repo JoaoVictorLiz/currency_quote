@@ -126,23 +126,22 @@ const GraficoHome = () => {
     const [DaysLast, setDaysLast] = useState<string[]>([])
     const [DaysApi, setDaysApi] = useState<number>(7)
     const [activeButton, setActiveButton] = useState<string | null>('7Days');
-
-    
-    function getFormattedDatesFromLastNDays(N: number) {
-        const formattedDates = [];
-        
-        
-        for (let i = 0; i < N; i++) {
-            const date = subDays(new Date(), i);
-            const formattedDate = format(date, 'dd MMM');
-            formattedDates.push(formattedDate);
-        }
-             
-        setDaysLast(formattedDates);
-    }
-
   
     useEffect(() => {
+        function getFormattedDatesFromLastNDays(N: number) {
+            const formattedDates = [];
+        
+            
+            for (let i = 0; i < N; i++) {
+                const date = subDays(new Date(), i);
+                const formattedDate = format(date, 'dd MMM');
+                formattedDates.push(formattedDate);
+            }
+                 
+            setDaysLast(formattedDates);
+        }
+        getFormattedDatesFromLastNDays(DaysApi)
+
         GetData(selected['sigla'], selected2['sigla'], DaysApi).then(response => {
         
           setData2(response)
@@ -200,19 +199,19 @@ const GraficoHome = () => {
     function getFormattedDatesFromLast7Days() {
         setDaysApi(7)
         setActiveButton('7Days');
-        return getFormattedDatesFromLastNDays(7); 
+      
     }
 
     function getFormattedDatesFromLast15Days() {
         setDaysApi(15)
         setActiveButton('15Days');
-        return getFormattedDatesFromLastNDays(15);
+       
     }
 
     function getFormattedDatesFromLast1Month() {
         setDaysApi(30)
         setActiveButton('30Days');
-        return getFormattedDatesFromLastNDays(30); 
+   
     }
   
 
