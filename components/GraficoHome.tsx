@@ -28,91 +28,91 @@ type moedaJson = {
 
 
 const moedas: moedaJson[] = [
-        {
-        id: 1,
-        name: "United States Dollar",
-        sigla: "USD"
-        },
-        {
-        id: 2,
-        name: "Euro",
-        sigla: "EUR"
-        },
-        {
-        id: 3,
-        name: "British Pound Sterling",
-        sigla: "GBP"
-        },
-        {
-        id: 4,
-        name: "Japanese Yen",
-        sigla: "JPY"
-        },
-        {
-        id: 5,
-        name: "Canadian Dollar",
-        sigla: "CAD"
-        },
-        {
-        id: 6,
-        name: "Australian Dollar",
-        sigla: "AUD"
-        },
-        {
-        id: 7,
-        name: "Swiss Franc",
-        sigla: "CHF"
-        },
-        {
-        id: 8,
-        name: "Swedish Krona",
-        sigla: "SEK"
-        },
-        {
-        id: 9,
-        name: "Mexican Peso",
-        sigla: "MXN"
-        },
-        {
-        id: 10,
-        name: "Chinese Renminbi",
-        sigla: "CNY"
-        },
-        {
-        id: 11,
-        name: "Indian Rupee",
-        sigla: "INR"
-        },
-        {
-        id: 12,
-        name: "Singapore Dollar",
-        sigla: "SGD"
-        },
-        {
-        id: 13,
-        name: "Argentine Peso",
-        sigla: "ARS"
-        },
-        {
-        id: 14,
-        name: "South African Rand",
-        sigla: "ZAR"
-        },
-        {
-        id: 15,
-        name: "New Zealand Dollar",
-        sigla: "NZD"
-        },
-        {
-        id: 16,
-        name: "Kuwaiti Dinar",
-        sigla: "KWD"
-        },
-        {
-        id: 17,
-        name: "Brazil Real",
-        sigla: "BRL"
-        }
+    {
+    id: 1,
+    name: "United States Dollar",
+    sigla: "USD"
+    },
+    {
+    id: 2,
+    name: "Euro",
+    sigla: "EUR"
+    },
+    {
+    id: 3,
+    name: "British Pound Sterling",
+    sigla: "GBP"
+    },
+    {
+    id: 4,
+    name: "Japanese Yen",
+    sigla: "JPY"
+    },
+    {
+    id: 5,
+    name: "Canadian Dollar",
+    sigla: "CAD"
+    },
+    {
+    id: 6,
+    name: "Australian Dollar",
+    sigla: "AUD"
+    },
+    {
+    id: 7,
+    name: "Swiss Franc",
+    sigla: "CHF"
+    },
+    {
+    id: 8,
+    name: "Swedish Krona",
+    sigla: "SEK"
+    },
+    {
+    id: 9,
+    name: "Mexican Peso",
+    sigla: "MXN"
+    },
+    {
+    id: 10,
+    name: "Chinese Renminbi",
+    sigla: "CNY"
+    },
+    {
+    id: 11,
+    name: "Indian Rupee",
+    sigla: "INR"
+    },
+    {
+    id: 12,
+    name: "Singapore Dollar",
+    sigla: "SGD"
+    },
+    {
+    id: 13,
+    name: "Argentine Peso",
+    sigla: "ARS"
+    },
+    {
+    id: 14,
+    name: "South African Rand",
+    sigla: "ZAR"
+    },
+    {
+    id: 15,
+    name: "New Zealand Dollar",
+    sigla: "NZD"
+    },
+    {
+    id: 16,
+    name: "Kuwaiti Dinar",
+    sigla: "KWD"
+    },
+    {
+    id: 17,
+    name: "Brazil Real",
+    sigla: "BRL"
+    }
   ]
   
   
@@ -167,7 +167,6 @@ const GraficoHome = () => {
     };
     
     const handleSelecaoComboBox2 = (valor: any) => {
-        // Verifique se o valor já foi selecionado em ComboBox1
         if (valor['sigla'] !== selected['sigla']) {
             setSelected2(valor);
         } else {
