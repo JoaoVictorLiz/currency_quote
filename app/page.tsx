@@ -5,7 +5,7 @@ const Home = () => {
 
   return (
     <>
-      <section className='py-8 sm:py-8 '>
+      <section className='py-4 sm:py-4 '>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl sm:text-center'>
             <h2 className='text-white text-3xl font-bold tracking-tight sm:text-4xl'>Stay in the Know with ExchangeTracker - Your Currency Companion.</h2>

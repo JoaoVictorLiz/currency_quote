@@ -1,11 +1,13 @@
 'use client'
 import React, {useState, Fragment, useEffect} from 'react'
 import dynamic from 'next/dynamic';
-import { format, subDays, subWeeks } from 'date-fns';
+import { format, subDays } from 'date-fns';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 import { Combobox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { GetData } from '@/functions/GetData';
+import { toast } from 'react-toastify';
+
 
 
 type moeda = {
@@ -16,9 +18,16 @@ type moeda = {
     timestamp: string;
 }
 
+type moedaJson = {
+    id: number;
+    name: string;
+    sigla: string; 
+}
 
 
-const moedas: any = [
+
+
+const moedas: moedaJson[] = [
         {
         id: 1,
         name: "United States Dollar",
@@ -116,6 +125,7 @@ const GraficoHome = () => {
     const [data2, setData2] = useState<moeda[]>([])
     const [DaysLast, setDaysLast] = useState<string[]>([])
     const [DaysApi, setDaysApi] = useState<number>(15)
+    const [activeButton, setActiveButton] = useState<string | null>('7Days');
 
     
     function getFormattedDatesFromLastNDays(N: number) {
@@ -140,55 +150,69 @@ const GraficoHome = () => {
     },[selected,selected2,DaysApi])
 
     const handleSelecaoComboBox1 = (valor: any) => {
-        console.log(valor)
-        // Verifique se o valor já foi selecionado em ComboBox2
         if (valor['sigla'] !== selected2['sigla']) {
             setSelected(valor);
-        } else {
-          // Valor já selecionado em ComboBox2, pode exibir uma mensagem de erro ou tomar outra ação apropriada.
-          alert('Este valor já foi selecionado em ComboBox2');
+        } else {  
+            toast.warn('Currency already selected.', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+          return false
         }
     };
     
-    const handleSelecaoComboBox2 = (valor:any) => {
+    const handleSelecaoComboBox2 = (valor: any) => {
         // Verifique se o valor já foi selecionado em ComboBox1
         if (valor['sigla'] !== selected['sigla']) {
             setSelected2(valor);
         } else {
-            // Valor já selecionado em ComboBox1, pode exibir uma mensagem de erro ou tomar outra ação apropriada.
-            alert('Este valor já foi selecionado em ComboBox1');
+            toast.warn('Currency already selected.', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+              return false
         }
     };
 
-    const filteredMoedas=
-      query === ''
-        ? moedas
-        : moedas.filter((person: any) =>
-   
-            person.name
-            .toLowerCase()
-            .replace(/\s+/g, '')
-            .includes(query.toLowerCase().replace(/\s+/g, ''))
-        )
+    const filteredMoedas = query === ''
+    ? moedas
+    : moedas.filter((moeda: any) =>
+        moeda.name
+        .toLowerCase()
+        .replace(/\s+/g, '')
+        .includes(query.toLowerCase().replace(/\s+/g, ''))
+    )
   
 
 
-    // Função para obter datas formatadas nos últimos 1 mês
-    function getFormattedDatesFromLast15Days() {
-        setDaysApi(15)
-        return getFormattedDatesFromLastNDays(15); // Aproximadamente 30 dias em um mês
+    function getFormattedDatesFromLast7Days() {
+        setDaysApi(7)
+        setActiveButton('7Days');
+        return getFormattedDatesFromLastNDays(7); 
     }
 
-    // Função para obter datas formatadas nos últimos 1 mês
-    function getFormattedDatesFromLastMonth() {
-        setDaysApi(30)
-        return getFormattedDatesFromLastNDays(30); // Aproximadamente 30 dias em um mês
+    function getFormattedDatesFromLast15Days() {
+        setDaysApi(15)
+        setActiveButton('15Days');
+        return getFormattedDatesFromLastNDays(15);
     }
-    
-    // Função para obter datas formatadas nos últimos 6 meses
-    function getFormattedDatesFromLast3Months() {
-        setDaysApi(90)
-        return getFormattedDatesFromLastNDays(90); // Aproximadamente 180 dias em seis meses
+
+    function getFormattedDatesFromLast1Month() {
+        setDaysApi(30)
+        setActiveButton('30Days');
+        return getFormattedDatesFromLastNDays(30); 
     }
   
 
@@ -206,8 +230,6 @@ const GraficoHome = () => {
 
 
     JSON.stringify(Json)
-    console.log(JSON.stringify(Json))
-
 
     const OptionsChart = {
         title:{ text: selected['sigla'] + ' x ' + selected2['sigla']},
@@ -248,7 +270,7 @@ const GraficoHome = () => {
             <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                 <Combobox.Input
                     className="w-full border-none  py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                    displayValue={(person: any) => person.name}
+                    displayValue={(coin: any) => coin.name}
                     onChange={(event) => setQuery(event.target.value)} />
                 <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
                     <ChevronUpDownIcon
@@ -269,18 +291,18 @@ const GraficoHome = () => {
                             Nothing found.
                         </div>
                     ) : (
-                        filteredMoedas.map((person: any) => (
+                        filteredMoedas.map((coin: any) => (
                             <Combobox.Option
-                                key={person.id}
+                                key={coin.id}
                                 className={({ active }) => `relative cursor-default select-none py-2 pl-10 pr-4 z-50 ${active ? 'bg-teal-600 text-white' : 'text-gray-900'}`}
-                                value={person}
+                                value={coin}
                             >
                                 {({ selected, active }) => (
                                     <>
                                         <span
                                             className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}
                                         >
-                                            {person.name}
+                                            {coin.name}
                                         </span>
                                         {selected ? (
                                             <span
@@ -303,7 +325,7 @@ const GraficoHome = () => {
                 <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                     <Combobox.Input
                         className="w-full border-none  py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                        displayValue={(person: any) => person.name}
+                        displayValue={(coin: any) => coin.name}
                         onChange={(event) => setQuery(event.target.value)} />
                     <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronUpDownIcon
@@ -324,18 +346,18 @@ const GraficoHome = () => {
                                 Nothing found.
                             </div>
                         ) : (
-                            filteredMoedas.map((person: any) => (
+                            filteredMoedas.map((coin: any) => (
                                 <Combobox.Option
-                                    key={person.id}
+                                    key={coin.id}
                                     className={({ active }) => `relative cursor-default select-none py-2 pl-10 pr-4 z-50 ${active ? 'bg-teal-600 text-white' : 'text-gray-900'}`}
-                                    value={person}
+                                    value={coin}
                                 >
                                     {({ selected, active }) => (
                                         <>
                                             <span
                                                 className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}
                                             >
-                                                {person.name}
+                                                {coin.name}
                                             </span>
                                             {selected ? (
                                                 <span
@@ -353,20 +375,22 @@ const GraficoHome = () => {
                 </Transition>
             </div>
         </Combobox>
+        
         </div>
-        <Chart options={OptionsChart} series={Json.series} type="line" width={'100%'} height={'300%'} />
+        <Chart options={OptionsChart} series={Json.series} type="line" width={'100%'} height={'200%'} />
         <div className='flex w-full items-center justify-center mt-2 '>
-            <button onClick={getFormattedDatesFromLast15Days} className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-white hover:border-transparent rounded-s">
+            <button onClick={getFormattedDatesFromLast7Days} className={`${ activeButton === '7Days' ? 'bg-blue-500 text-white font-semibold border-transparent py-2 px-4 border rounded-s' : 'bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-white hover:border-transparent rounded-s'}`}>
+            7 Days
+            </button>
+            <button onClick={getFormattedDatesFromLast15Days}  className={`${ activeButton === '15Days' ? 'bg-blue-500 text-white font-semibold border-transparent py-2 px-4 border ' : 'bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-white hover:border-transparent'} `}>
             15 Days
             </button>
-            <button onClick={getFormattedDatesFromLastMonth}  className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-white hover:border-transparent ">
+            <button onClick={getFormattedDatesFromLast1Month}   className={`${ activeButton === '30Days' ? 'bg-blue-500 text-white font-semibold border-transparent py-2 px-4 border rounded-e' : 'bg-transparent text-white font-semibold hover:bg-blue-500 hover:text-white py-2 px-4 border border-white hover:border-transparent '} `}>
             1 Month
-            </button>
-            <button onClick={getFormattedDatesFromLast3Months}  className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-white hover:border-transparent ">
-            3 Month
             </button>
            
         </div>
+     
     </>
     )
 }
